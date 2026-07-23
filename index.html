@@ -281,15 +281,16 @@
     border-radius: 14px;
     border: 1.5px solid;
   }
+  /* Вершина теперь того же размера, что и остальные — без выделения */
   .mini-cell.top {
-    min-width: 40px;
-    height: 32px;
-    font-size: 13px;
-    border-radius: 16px;
-    border-width: 2px;
+    min-width: 34px;
+    height: 28px;
+    font-size: 11px;
+    border-radius: 14px;
+    border-width: 1.5px;
   }
 
-  /* Позиции 1, 4, 6 — бордовые */
+  /* Позиции 1, 4, 6 — бордовые (одинаковый стиль) */
   .mini-cell.grp-a {
     background: rgba(114,47,55,0.18);
     border-color: #722f37;
@@ -306,12 +307,6 @@
     background: rgba(39,174,96,0.18);
     border-color: #27ae60;
     color: #1e8449;
-  }
-  .mini-cell.top.grp-a {
-    background: rgba(114,47,55,0.35);
-    border-color: #722f37;
-    color: #5d1a2b;
-    box-shadow: 0 0 8px rgba(114,47,55,0.3);
   }
   
   .modal {
@@ -378,12 +373,13 @@
     display: flex; align-items: center; justify-content: center;
     color: #555;
   }
+  /* Вершина того же размера, что и остальные */
   .big-cell.top {
-    min-width: 90px;
-    height: 76px;
-    font-size: 26px;
-    border-radius: 38px;
-    border-width: 3px;
+    min-width: 72px;
+    height: 64px;
+    font-size: 20px;
+    border-radius: 32px;
+    border-width: 2.5px;
   }
 
   .big-cell.grp-a {
@@ -400,12 +396,6 @@
     background: radial-gradient(circle, rgba(39,174,96,0.22), rgba(39,174,96,0.06));
     border-color: #27ae60;
     color: #1e8449;
-  }
-  .big-cell.top.grp-a {
-    background: radial-gradient(circle, rgba(114,47,55,0.4), rgba(114,47,55,0.12));
-    border-color: #722f37;
-    color: #5d1a2b;
-    box-shadow: 0 0 20px rgba(114, 47, 55, 0.35);
   }
   
   .arcana-section {
@@ -625,11 +615,6 @@
       min-width: 28px;
       height: 24px;
       font-size: 10px;
-    }
-    .mini-cell.top {
-      min-width: 34px;
-      height: 28px;
-      font-size: 11px;
     }
     .arcana-header {
       flex-wrap: wrap;
@@ -1174,7 +1159,7 @@ function calcPyramid(day, month, year, bdate) {
   return {p1, p2, p3, p4, p5, p6, yBSum, ySum};
 }
 
-// Позиции 1, 4, 6 — бордовые (grp-a)
+// Позиции 1, 4, 6 — бордовые (grp-a) — ОДИНАКОВЫЙ СТИЛЬ
 // Позиции 2, 5 — синие (grp-b)
 // Позиция 3 — изумрудно-зелёная (grp-c)
 function grpClass(pos) {
@@ -1197,7 +1182,7 @@ function renderMiniPyramid(p) {
         <div class="mini-cell ${grpClass(5)}">${toRoman(p.p5)}</div>
       </div>
       <div class="mini-row">
-        <div class="mini-cell top ${grpClass(6)}">${toRoman(p.p6)}</div>
+        <div class="mini-cell ${grpClass(6)}">${toRoman(p.p6)}</div>
       </div>
     </div>
   `;
@@ -1216,7 +1201,7 @@ function renderBigPyramid(p) {
         <div class="big-cell ${grpClass(5)}"><span class="pos">5</span>${toRoman(p.p5)}</div>
       </div>
       <div class="big-row">
-        <div class="big-cell top ${grpClass(6)}"><span class="pos">6</span>${toRoman(p.p6)}</div>
+        <div class="big-cell ${grpClass(6)}"><span class="pos">6</span>${toRoman(p.p6)}</div>
       </div>
     </div>
   `;
