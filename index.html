@@ -602,7 +602,18 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <input type="date" id="newBdate" title="Дата рождения">
+      <!-- Заменено: вместо input type="date" -->
+      <div style="display: flex; gap: 5px;">
+        <select id="birthDay" style="width: 60px;">
+          <option value="">День</option>
+        </select>
+        <select id="birthMonth" style="width: 80px;">
+          <option value="">Месяц</option>
+        </select>
+        <select id="birthYear" style="width: 80px;">
+          <option value="">Год</option>
+        </select>
+      </div>
       <input type="text" id="newName" placeholder="Имя" maxlength="20" title="Имя человека">
       <button class="add small" onclick="addDate()">+</button>
     </div>
@@ -656,6 +667,51 @@
 <script>
 const monthNames = ["январь","февраль","март","апрель","май","июнь",
                     "июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+
+// Заполнение выпадающих списков для даты рождения
+function initDateSelectors() {
+  const birthDay = document.getElementById('birthDay');
+  const birthMonth = document.getElementById('birthMonth');
+  const birthYear = document.getElementById('birthYear');
+  
+  // Дни (1-31)
+  for (let i = 1; i <= 31; i++) {
+    const option = document.createElement('option');
+    option.value = i.toString().padStart(2, '0');
+    option.textContent = i.toString().padStart(2, '0');
+    birthDay.appendChild(option);
+  }
+  
+  // Месяцы
+  monthNames.forEach((month, index) => {
+    const option = document.createElement('option');
+    option.value = (index + 1).toString().padStart(2, '0');
+    option.textContent = month;
+    birthMonth.appendChild(option);
+  });
+  
+  // Годы (1900-2026)
+  const currentYear = new Date().getFullYear();
+  for (let i = 1900; i <= currentYear; i++) {
+    const option = document.createElement('option');
+    option.value = i.toString();
+    option.textContent = i.toString();
+    birthYear.appendChild(option);
+  }
+}
+
+// Получение даты из выпадающих списков
+function getBirthDate() {
+  const day = document.getElementById('birthDay').value;
+  const month = document.getElementById('birthMonth').value;
+  const year = document.getElementById('birthYear').value;
+  
+  if (!day || !month || !year) {
+    return null;
+  }
+  
+  return `${year}-${month}-${day}`;
+}
 
 const now = new Date();
 document.getElementById('fmonth').value = now.getMonth() + 1;
@@ -947,13 +1003,17 @@ function formatDateRu(dateStr) {
 }
 
 async function addDate() {
-  const dateInput = document.getElementById('newBdate');
-  const nameInput = document.getElementById('newName');
-  const date = dateInput.value;
-  const name = nameInput.value.trim();
+  const date = getBirthDate();
+  const name = document.getElementById('newName').value.trim();
   
-  if (!date) { alert('Выберите дату рождения'); return; }
-  if (!name) { alert('Введите имя'); return; }
+  if (!date) { 
+    alert('Выберите дату рождения'); 
+    return; 
+  }
+  if (!name) { 
+    alert('Введите имя'); 
+    return; 
+  }
   
   if (savedDates.some(item => item.date === date)) {
     alert('Эта дата уже добавлена');
@@ -971,8 +1031,7 @@ async function addDate() {
   renderDateSelect();
   renderCalendar();
   
-  dateInput.value = '';
-  nameInput.value = '';
+  document.getElementById('newName').value = '';
 }
 
 async function removeActiveDate() {
@@ -1252,6 +1311,8 @@ document.getElementById('modal').onclick = (e) => {
 
 (async () => {
   try {
+    initDateSelectors();
+    
     db = await openDB();
     savedDates = await loadAllDates();
     activeDate = await loadActiveDate();
