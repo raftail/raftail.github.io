@@ -7,10 +7,7 @@
   * { box-sizing: border-box; }
   body {
     font-family: 'Georgia', serif;
-    background: 
-      linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%),
-      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
-    background-blend-mode: overlay;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     color: #2c3e50;
     min-height: 100vh;
     margin: 0;
@@ -64,7 +61,6 @@
     color: #2c3e50;
   }
   
-  /* Блок "Месяц + Год" — всегда в одну строку */
   .period-group {
     display: flex;
     flex-direction: column;
@@ -615,7 +611,6 @@
     .control-group {
       width: 100%;
     }
-    /* Блок периода (месяц+год) не растягивается на всю ширину */
     .period-group {
       width: 100%;
     }
@@ -690,7 +685,6 @@
     </div>
   </div>
   
-  <!-- ОБЪЕДИНЁННЫЙ БЛОК: Месяц + Год в одной строке -->
   <div class="period-group">
     <div class="period-row">
       <div class="period-field">
