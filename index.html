@@ -64,6 +64,40 @@
     color: #2c3e50;
   }
   
+  /* Блок "Месяц + Год" — всегда в одну строку */
+  .period-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .period-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .period-row .period-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+  .period-row .period-field label {
+    color: #722f37;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .period-row .period-field select,
+  .period-row .period-field input {
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid rgba(114, 47, 55, 0.5);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    color: #2c3e50;
+    width: 100%;
+  }
+  
   .date-select {
     min-width: 240px;
     padding: 10px 35px 10px 12px;
@@ -281,7 +315,6 @@
     border-radius: 14px;
     border: 1.5px solid;
   }
-  /* Вершина теперь того же размера, что и остальные — без выделения */
   .mini-cell.top {
     min-width: 34px;
     height: 28px;
@@ -290,19 +323,16 @@
     border-width: 1.5px;
   }
 
-  /* Позиции 1, 4, 6 — бордовые (одинаковый стиль) */
   .mini-cell.grp-a {
     background: rgba(114,47,55,0.18);
     border-color: #722f37;
     color: #722f37;
   }
-  /* Позиции 2, 5 — синие */
   .mini-cell.grp-b {
     background: rgba(41,128,185,0.18);
     border-color: #2980b9;
     color: #2980b9;
   }
-  /* Позиция 3 — изумрудно-зелёная */
   .mini-cell.grp-c {
     background: rgba(39,174,96,0.18);
     border-color: #27ae60;
@@ -373,7 +403,6 @@
     display: flex; align-items: center; justify-content: center;
     color: #555;
   }
-  /* Вершина того же размера, что и остальные */
   .big-cell.top {
     min-width: 72px;
     height: 64px;
@@ -586,6 +615,10 @@
     .control-group {
       width: 100%;
     }
+    /* Блок периода (месяц+год) не растягивается на всю ширину */
+    .period-group {
+      width: 100%;
+    }
     .date-select {
       min-width: 100%;
       width: 100%;
@@ -601,9 +634,6 @@
     #birthDay, #birthMonth, #birthYear {
       flex: 1;
       min-width: 0;
-    }
-    #fmonth, #fyear {
-      width: 100%;
     }
     button {
       width: 100%;
@@ -660,21 +690,27 @@
     </div>
   </div>
   
-  <div class="control-group">
-    <label>Месяц прогноза:</label>
-    <select id="fmonth">
-      <option value="1">Январь</option><option value="2">Февраль</option>
-      <option value="3">Март</option><option value="4">Апрель</option>
-      <option value="5">Май</option><option value="6">Июнь</option>
-      <option value="7">Июль</option><option value="8">Август</option>
-      <option value="9">Сентябрь</option><option value="10">Октябрь</option>
-      <option value="11">Ноябрь</option><option value="12">Декабрь</option>
-    </select>
+  <!-- ОБЪЕДИНЁННЫЙ БЛОК: Месяц + Год в одной строке -->
+  <div class="period-group">
+    <div class="period-row">
+      <div class="period-field">
+        <label>Месяц прогноза:</label>
+        <select id="fmonth">
+          <option value="1">Январь</option><option value="2">Февраль</option>
+          <option value="3">Март</option><option value="4">Апрель</option>
+          <option value="5">Май</option><option value="6">Июнь</option>
+          <option value="7">Июль</option><option value="8">Август</option>
+          <option value="9">Сентябрь</option><option value="10">Октябрь</option>
+          <option value="11">Ноябрь</option><option value="12">Декабрь</option>
+        </select>
+      </div>
+      <div class="period-field">
+        <label>Год прогноза:</label>
+        <input type="number" id="fyear" value="2026" min="1900" max="2200">
+      </div>
+    </div>
   </div>
-  <div class="control-group">
-    <label>Год прогноза:</label>
-    <input type="number" id="fyear" value="2026" min="1900" max="2200">
-  </div>
+  
   <div class="control-group btn-group">
     <label>&nbsp;</label>
     <button onclick="renderCalendar()">Построить календарь</button>
@@ -1159,9 +1195,6 @@ function calcPyramid(day, month, year, bdate) {
   return {p1, p2, p3, p4, p5, p6, yBSum, ySum};
 }
 
-// Позиции 1, 4, 6 — бордовые (grp-a) — ОДИНАКОВЫЙ СТИЛЬ
-// Позиции 2, 5 — синие (grp-b)
-// Позиция 3 — изумрудно-зелёная (grp-c)
 function grpClass(pos) {
   if (pos === 1 || pos === 4 || pos === 6) return 'grp-a';
   if (pos === 2 || pos === 5) return 'grp-b';
