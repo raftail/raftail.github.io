@@ -35,7 +35,7 @@
     flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
     background: rgba(255,255,255,0.7);
     border: 1px solid rgba(114, 47, 55, 0.3);
     border-radius: 15px;
@@ -45,7 +45,10 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
-  .control-group { display: flex; flex-direction: column; }
+  .control-group { 
+    display: flex; 
+    flex-direction: column; 
+  }
   .control-group label { 
     color: #722f37; 
     margin-bottom: 6px; 
@@ -110,17 +113,13 @@
   
   .add-block {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
     align-items: center;
     padding: 6px;
     background: rgba(255,255,255,0.5);
     border: 1px dashed rgba(114, 47, 55, 0.3);
     border-radius: 8px;
-  }
-  .add-block input[type="date"] {
-    width: 150px;
-    padding: 8px;
-    font-size: 14px;
   }
   .add-block input[type="text"] {
     width: 130px;
@@ -159,6 +158,10 @@
     box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
   }
   
+  .control-group.btn-group {
+    justify-content: flex-end;
+  }
+  
   .legend-bar {
     display: flex;
     justify-content: center;
@@ -187,7 +190,7 @@
   }
   .legend-dot.grp-a { background: rgba(114,47,55,0.25); border-color: #722f37; }
   .legend-dot.grp-b { background: rgba(41,128,185,0.25); border-color: #2980b9; }
-  .legend-dot.grp-c { background: rgba(142,68,173,0.25); border-color: #8e44ad; }
+  .legend-dot.grp-c { background: rgba(39,174,96,0.25); border-color: #27ae60; }
 
   .month-title {
     text-align: center;
@@ -286,20 +289,23 @@
     border-width: 2px;
   }
 
+  /* Позиции 1, 4, 6 — бордовые */
   .mini-cell.grp-a {
     background: rgba(114,47,55,0.18);
     border-color: #722f37;
     color: #722f37;
   }
+  /* Позиции 2, 5 — синие */
   .mini-cell.grp-b {
     background: rgba(41,128,185,0.18);
     border-color: #2980b9;
     color: #2980b9;
   }
+  /* Позиция 3 — изумрудно-зелёная */
   .mini-cell.grp-c {
-    background: rgba(142,68,173,0.18);
-    border-color: #8e44ad;
-    color: #8e44ad;
+    background: rgba(39,174,96,0.18);
+    border-color: #27ae60;
+    color: #1e8449;
   }
   .mini-cell.top.grp-a {
     background: rgba(114,47,55,0.35);
@@ -378,7 +384,6 @@
     font-size: 26px;
     border-radius: 38px;
     border-width: 3px;
-    box-shadow: 0 0 20px rgba(114, 47, 55, 0.35);
   }
 
   .big-cell.grp-a {
@@ -392,14 +397,15 @@
     color: #2980b9;
   }
   .big-cell.grp-c {
-    background: radial-gradient(circle, rgba(142,68,173,0.22), rgba(142,68,173,0.06));
-    border-color: #8e44ad;
-    color: #8e44ad;
+    background: radial-gradient(circle, rgba(39,174,96,0.22), rgba(39,174,96,0.06));
+    border-color: #27ae60;
+    color: #1e8449;
   }
   .big-cell.top.grp-a {
     background: radial-gradient(circle, rgba(114,47,55,0.4), rgba(114,47,55,0.12));
     border-color: #722f37;
     color: #5d1a2b;
+    box-shadow: 0 0 20px rgba(114, 47, 55, 0.35);
   }
   
   .arcana-section {
@@ -581,6 +587,57 @@
     margin-left: 10px;
     box-shadow: 0 2px 6px rgba(41, 128, 185, 0.3);
   }
+  
+  @media (max-width: 600px) {
+    .controls {
+      padding: 15px;
+      gap: 12px;
+    }
+    .control-group {
+      width: 100%;
+    }
+    .date-select {
+      min-width: 100%;
+      width: 100%;
+    }
+    .add-block {
+      width: 100%;
+    }
+    .add-block input[type="text"] {
+      flex: 1;
+      width: auto;
+      min-width: 0;
+    }
+    #birthDay, #birthMonth, #birthYear {
+      flex: 1;
+      min-width: 0;
+    }
+    #fmonth, #fyear {
+      width: 100%;
+    }
+    button {
+      width: 100%;
+    }
+    .day-cell {
+      min-height: 140px;
+    }
+    .mini-cell {
+      min-width: 28px;
+      height: 24px;
+      font-size: 10px;
+    }
+    .mini-cell.top {
+      min-width: 34px;
+      height: 28px;
+      font-size: 11px;
+    }
+    .arcana-header {
+      flex-wrap: wrap;
+    }
+    .arcana-position {
+      font-size: 10px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -602,14 +659,14 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <div style="display: flex; gap: 5px;">
-        <select id="birthDay" style="width: 60px;">
+      <div style="display: flex; gap: 5px; flex: 1;">
+        <select id="birthDay" style="flex: 1; min-width: 0;">
           <option value="">День</option>
         </select>
-        <select id="birthMonth" style="width: 80px;">
+        <select id="birthMonth" style="flex: 1; min-width: 0;">
           <option value="">Месяц</option>
         </select>
-        <select id="birthYear" style="width: 80px;">
+        <select id="birthYear" style="flex: 1; min-width: 0;">
           <option value="">Год</option>
         </select>
       </div>
@@ -633,7 +690,10 @@
     <label>Год прогноза:</label>
     <input type="number" id="fyear" value="2026" min="1900" max="2200">
   </div>
-  <button onclick="renderCalendar()" style="align-self: flex-end;">Построить календарь</button>
+  <div class="control-group btn-group">
+    <label>&nbsp;</label>
+    <button onclick="renderCalendar()">Построить календарь</button>
+  </div>
 </div>
 
 <div class="legend-bar">
@@ -1114,6 +1174,9 @@ function calcPyramid(day, month, year, bdate) {
   return {p1, p2, p3, p4, p5, p6, yBSum, ySum};
 }
 
+// Позиции 1, 4, 6 — бордовые (grp-a)
+// Позиции 2, 5 — синие (grp-b)
+// Позиция 3 — изумрудно-зелёная (grp-c)
 function grpClass(pos) {
   if (pos === 1 || pos === 4 || pos === 6) return 'grp-a';
   if (pos === 2 || pos === 5) return 'grp-b';
@@ -1262,7 +1325,7 @@ function showDayDetail(day, month, year, p, bdate) {
     <div style="text-align:left;">
       <span style="color:#722f37;">■</span> Позиция 1: день рождения ${dB} + день ${day} = ${toRoman(p.p1)}<br>
       <span style="color:#2980b9;">■</span> Позиция 2: месяц рождения ${mB} + месяц ${month} = ${toRoman(p.p2)}<br>
-      <span style="color:#8e44ad;">■</span> Позиция 3: (цифры года рождения ${yB}: ${sumDigits(yB)} → ${toRoman(p.yBSum)}) + (цифры года ${year}: ${sumDigits(year)} → ${toRoman(p.ySum)}) = ${toRoman(p.p3)}<br>
+      <span style="color:#27ae60;">■</span> Позиция 3: (цифры года рождения ${yB}: ${sumDigits(yB)} → ${toRoman(p.yBSum)}) + (цифры года ${year}: ${sumDigits(year)} → ${toRoman(p.ySum)}) = ${toRoman(p.p3)}<br>
       <span style="color:#722f37;">■</span> Позиция 4 (1+2): ${toRoman(p.p4)}<br>
       <span style="color:#2980b9;">■</span> Позиция 5 (2+3): ${toRoman(p.p5)}<br>
       <span style="color:#722f37;">■</span> Позиция 6 — вершина (4+5): ${toRoman(p.p6)}<br><br>
