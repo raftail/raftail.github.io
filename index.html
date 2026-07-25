@@ -17,15 +17,8 @@
     color: #722f37;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     text-align: center;
-    margin-bottom: 3px;
-    font-size: 24px;
-  }
-  .subtitle {
-    color: #5a6c7d;
-    text-align: center;
-    font-style: italic;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 24px;
   }
   
   .controls {
@@ -255,7 +248,6 @@
     border: 1px solid rgba(93, 173, 226, 0.35);
   }
   
-  /* Компактный блок даты вверху ячейки */
   .day-num {
     font-size: 11px;
     font-weight: bold;
@@ -273,7 +265,6 @@
     line-height: 1;
   }
   
-  /* Увеличенная пирамидка */
   .mini-pyramid {
     display: flex;
     flex-direction: column;
@@ -578,11 +569,7 @@
     }
     h1 {
       font-size: 18px;
-      margin-bottom: 2px;
-    }
-    .subtitle {
-      font-size: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .controls {
       padding: 6px;
@@ -680,7 +667,6 @@
       font-size: 7px;
       margin-bottom: 1px;
     }
-    /* Увеличенная мини-пирамидка на мобильных */
     .mini-cell {
       min-width: 22px;
       height: 17px;
@@ -701,13 +687,12 @@
 <body>
 
 <h1>🃏 Нумерология Таро 🃏</h1>
-<p class="subtitle">Рассчитай свой день через математику чисел</p>
 
 <div class="controls">
   <div class="control-group">
     <label>Выбор даты:</label>
     <div style="display: flex; gap: 4px; align-items: center;">
-      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value)">
+      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value)" onwheel="this.focus()">
         <option value="">— нет сохранённых дат —</option>
       </select>
       <button class="small danger" onclick="removeActiveDate()" title="Удалить выбранную дату">×</button>
@@ -717,9 +702,9 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <select id="birthDay"></select>
-      <select id="birthMonth"></select>
-      <select id="birthYear"></select>
+      <select id="birthDay" onwheel="this.focus()"></select>
+      <select id="birthMonth" onwheel="this.focus()"></select>
+      <select id="birthYear" onwheel="this.focus()"></select>
       <input type="text" id="newName" placeholder="Имя" maxlength="20" title="Имя человека">
       <button class="add small" onclick="addDate()">+</button>
     </div>
@@ -729,7 +714,7 @@
     <div class="period-row">
       <div class="period-field">
         <label>Месяц прогноза:</label>
-        <select id="fmonth" onchange="autoRender()">
+        <select id="fmonth" onchange="autoRender()" onwheel="this.focus()">
           <option value="1">Январь</option><option value="2">Февраль</option>
           <option value="3">Март</option><option value="4">Апрель</option>
           <option value="5">Май</option><option value="6">Июнь</option>
