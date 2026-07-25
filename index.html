@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Нумерология Таро</title>
-<!-- Иконка джокера во вкладке браузера -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🃏</text></svg>">
 <style>
   * { box-sizing: border-box; }
@@ -274,7 +273,6 @@
     box-shadow: 0 4px 12px rgba(114, 47, 55, 0.2);
   }
   .day-cell.empty { visibility: hidden; }
-  /* Светло-голубая подсветка текущего дня */
   .day-cell.today {
     background: rgba(93, 173, 226, 0.12);
     border: 1px solid rgba(93, 173, 226, 0.35);
@@ -285,7 +283,16 @@
     font-size: 16px;
     font-weight: bold;
     color: #722f37;
+    margin-bottom: 2px;
+  }
+  
+  /* Название месяца под числом */
+  .day-month {
+    font-size: 10px;
+    color: #5a6c7d;
+    text-transform: lowercase;
     margin-bottom: 6px;
+    font-style: italic;
   }
   
   .mini-pyramid {
@@ -1320,7 +1327,12 @@ function renderCalendar() {
       cell.classList.add('today');
     }
     const p = calcPyramid(d, fmonth, fyear, activeDate);
-    cell.innerHTML = `<div class="day-num">${d}</div>${renderMiniPyramid(p)}`;
+    // Добавляем название месяца под числом
+    cell.innerHTML = `
+      <div class="day-num">${d}</div>
+      <div class="day-month">${monthNames[fmonth-1]}</div>
+      ${renderMiniPyramid(p)}
+    `;
     cell.onclick = () => showDayDetail(d, fmonth, fyear, p, activeDate);
     cal.appendChild(cell);
   }
