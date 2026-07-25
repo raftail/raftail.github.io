@@ -686,13 +686,13 @@
 </head>
 <body>
 
-<h1> Нумерология Таро </h1>
+<h1>🃏 Нумерология Таро 🃏</h1>
 
 <div class="controls">
   <div class="control-group">
     <label>Выбор даты:</label>
     <div style="display: flex; gap: 4px; align-items: center;">
-      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value)" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
+      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value); this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
         <option value="">— нет сохранённых дат —</option>
       </select>
       <button class="small danger" onclick="removeActiveDate()" title="Удалить выбранную дату">×</button>
@@ -702,9 +702,9 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <select id="birthDay" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
-      <select id="birthMonth" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
-      <select id="birthYear" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
+      <select id="birthDay" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
+      <select id="birthMonth" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
+      <select id="birthYear" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
       <input type="text" id="newName" placeholder="Имя" maxlength="20" title="Имя человека">
       <button class="add small" onclick="addDate()">+</button>
     </div>
@@ -714,7 +714,7 @@
     <div class="period-row">
       <div class="period-field">
         <label>Месяц прогноза:</label>
-        <select id="fmonth" onchange="autoRender()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
+        <select id="fmonth" onchange="autoRender(); this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
           <option value="1">Январь</option><option value="2">Февраль</option>
           <option value="3">Март</option><option value="4">Апрель</option>
           <option value="5">Май</option><option value="6">Июнь</option>
@@ -897,7 +897,7 @@ const majorArcana = {
   1: {
     name: "Маг",
     keywords: "Воля • Мастерство • Проявление • Инициатива",
-    symbolism: "Юноша в белой тунике и красном плаще стоит за столом, на котором разложены четыре масти Таро — жезл, чаша, меч и пентакль. Одна рука поднята к небу, другая указывает на землю — «что вверху, то и внизу». Над головой — знак бесконечности , вокруг — розы и лилии.",
+    symbolism: "Юноша в белой тунике и красном плаще стоит за столом, на котором разложены четыре масти Таро — жезл, чаша, меч и пентакль. Одна рука поднята к небу, другая указывает на землю — «что вверху, то и внизу». Над головой — знак бесконечности ∞, вокруг — розы и лилии.",
     description: "Маг — первый сознательный акт творения после пробуждения Дурака. Он — проводник между мирами, владеющий всеми четырьмя стихиями. Этот аркан говорит: у вас есть всё необходимое, чтобы начать. Вопрос лишь в том, готовы ли вы применить свои дары.",
     positive: "Высокая продуктивность, ясность намерения, способность убеждать и вести. Идеальный день для старта проекта, важных переговоров, обучения новому ремеслу, публичных выступлений. Ваши слова обретают вес.",
     warning: "Маг в тени — это фокусник-мошенник, манипулятор, шарлатан. Остерегайтесь обмана — как со стороны, так и самообмана «я всё могу». Не распыляйтесь: Маг требует одного чёткого намерения.",
@@ -915,7 +915,7 @@ const majorArcana = {
   3: {
     name: "Императрица",
     keywords: "Изобилие • Творчество • Плодородие • Природа",
-    symbolism: "Полная женщина в пышных одеждах сидит на троне среди цветущего сада. На подушках — венеры-символы . У её ног — пшеничные колосья. В руке — скипетр. На земле — сердца. Над ней — двенадцать звёзд (знак зодиака).",
+    symbolism: "Полная женщина в пышных одеждах сидит на троне среди цветущего сада. На подушках — венеры-символы ♀. У её ног — пшеничные колосья. В руке — скипетр. На земле — сердца. Над ней — двенадцать звёзд (знак зодиака).",
     description: "Императрица — воплощение Природы-Матери, дающей жизнь всему сущему. Она — принцип плодородия во всех смыслах: от рождения ребёнка до рождения идеи. Там, где она появляется, всё расцветает и созревает.",
     positive: "Творческий подъём, гармония в отношениях, расцвет красоты и здоровья. Хорошее время для начала творческих проектов, заботы о теле, украшения дома, общения с природой, романтических встреч.",
     warning: "Тень Императрицы — излишества, лень, удушающая опека, ревность. Не впадайте в крайности. Избегайте собственничества в отношениях. Не игнорируйте свои потребности ради других.",
@@ -1365,7 +1365,7 @@ function showDayDetail(day, month, year, p, bdate) {
   const personName = getActivePersonName();
   document.getElementById('modalTitle').innerHTML = 
     `${day} ${monthNames[month-1]} ${year}` +
-    (personName ? `<span class="person-badge">👤 ${personName}</span>` : '');
+    (personName ? `<span class="person-badge"> ${personName}</span>` : '');
   document.getElementById('bigPyramid').innerHTML = renderBigPyramid(p);
   
   document.getElementById('arcanaSection').innerHTML = renderArcana(p);
@@ -1424,7 +1424,7 @@ initDateSelectors();
     }
   } catch (err) {
     console.error('Ошибка инициализации БД:', err);
-    document.getElementById('calendar').innerHTML = '<div class="empty-state">⚠️ Ошибка инициализации хранилища. Попробуйте другой браузер.</div>';
+    document.getElementById('calendar').innerHTML = '<div class="empty-state">️ Ошибка инициализации хранилища. Попробуйте другой браузер.</div>';
   }
 })();
 </script>
