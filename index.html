@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Нумерология Таро</title>
+<!-- Иконка джокера во вкладке браузера -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🃏</text></svg>">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -272,10 +274,11 @@
     box-shadow: 0 4px 12px rgba(114, 47, 55, 0.2);
   }
   .day-cell.empty { visibility: hidden; }
+  /* Светлое выделение текущего дня — мягкий бордовый оттенок без тени */
   .day-cell.today {
-    background: rgba(160, 82, 74, 0.2);
-    border-color: #a0524a;
-    box-shadow: 0 0 15px rgba(160, 82, 74, 0.35);
+    background: rgba(114, 47, 55, 0.08);
+    border: 1.5px dashed rgba(114, 47, 55, 0.45);
+    box-shadow: none;
   }
   
   .day-num {
@@ -283,6 +286,10 @@
     font-weight: bold;
     color: #722f37;
     margin-bottom: 6px;
+  }
+  /* Номер сегодняшнего дня чуть ярче */
+  .day-cell.today .day-num {
+    color: #5d1a2b;
   }
   
   .mini-pyramid {
