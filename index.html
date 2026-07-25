@@ -710,9 +710,9 @@
 </div>
 
 <div class="legend-bar">
-  <div class="legend-item"><div class="legend-dot grp-a"></div> Позиции 1, 4, 6 - Энергии дня</div>
-  <div class="legend-item"><div class="legend-dot grp-b"></div> Позиции 2, 5 - Энергии Месяца</div>
-  <div class="legend-item"><div class="legend-dot grp-c"></div> Позиция 3 - Энергия Года</div>
+  <div class="legend-item"><div class="legend-dot grp-a"></div> Энергии дня</div>
+  <div class="legend-item"><div class="legend-dot grp-b"></div> Энергии Месяца</div>
+  <div class="legend-item"><div class="legend-dot grp-c"></div> Энергия Года</div>
 </div>
 
 <div class="month-title" id="monthTitle"></div>
@@ -740,18 +740,15 @@
 const monthNames = ["январь","февраль","март","апрель","май","июнь",
                     "июль","август","сентябрь","октябрь","ноябрь","декабрь"];
 
-// Инициализация выпадающих списков дат
 function initDateSelectors() {
   const birthDay = document.getElementById('birthDay');
   const birthMonth = document.getElementById('birthMonth');
   const birthYear = document.getElementById('birthYear');
   
-  // Очищаем списки
   birthDay.innerHTML = '';
   birthMonth.innerHTML = '';
   birthYear.innerHTML = '';
   
-  // Дни (1-31)
   for (let i = 1; i <= 31; i++) {
     const option = document.createElement('option');
     option.value = i.toString().padStart(2, '0');
@@ -759,7 +756,6 @@ function initDateSelectors() {
     birthDay.appendChild(option);
   }
   
-  // Месяцы
   monthNames.forEach((month, index) => {
     const option = document.createElement('option');
     option.value = (index + 1).toString().padStart(2, '0');
@@ -767,7 +763,6 @@ function initDateSelectors() {
     birthMonth.appendChild(option);
   });
   
-  // Годы (1900-текущий)
   const currentYear = new Date().getFullYear();
   for (let i = 1900; i <= currentYear; i++) {
     const option = document.createElement('option');
@@ -776,7 +771,6 @@ function initDateSelectors() {
     birthYear.appendChild(option);
   }
   
-  // Устанавливаем значения по умолчанию
   birthDay.value = '01';
   birthMonth.value = '01';
   birthYear.value = currentYear.toString();
@@ -1388,7 +1382,6 @@ document.getElementById('modal').onclick = (e) => {
   if (e.target.id === 'modal') closeModal();
 };
 
-// Инициализация при загрузке страницы
 initDateSelectors();
 
 (async () => {
