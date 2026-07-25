@@ -17,8 +17,15 @@
     color: #722f37;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     font-size: 24px;
+  }
+  .subtitle {
+    color: #5a6c7d;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 10px;
+    font-size: 12px;
   }
   
   .controls {
@@ -569,7 +576,11 @@
     }
     h1 {
       font-size: 18px;
-      margin-bottom: 8px;
+      margin-bottom: 2px;
+    }
+    .subtitle {
+      font-size: 10px;
+      margin-bottom: 6px;
     }
     .controls {
       padding: 6px;
@@ -687,12 +698,13 @@
 <body>
 
 <h1>🃏 Нумерология Таро 🃏</h1>
+<p class="subtitle">Рассчитай свой день через математику чисел</p>
 
 <div class="controls">
   <div class="control-group">
     <label>Выбор даты:</label>
     <div style="display: flex; gap: 4px; align-items: center;">
-      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value); this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
+      <select id="dateSelect" class="date-select empty" onchange="selectDate(this.value)">
         <option value="">— нет сохранённых дат —</option>
       </select>
       <button class="small danger" onclick="removeActiveDate()" title="Удалить выбранную дату">×</button>
@@ -702,9 +714,9 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <select id="birthDay" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
-      <select id="birthMonth" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
-      <select id="birthYear" onchange="this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()"></select>
+      <select id="birthDay"></select>
+      <select id="birthMonth"></select>
+      <select id="birthYear"></select>
       <input type="text" id="newName" placeholder="Имя" maxlength="20" title="Имя человека">
       <button class="add small" onclick="addDate()">+</button>
     </div>
@@ -714,7 +726,7 @@
     <div class="period-row">
       <div class="period-field">
         <label>Месяц прогноза:</label>
-        <select id="fmonth" onchange="autoRender(); this.focus()" tabindex="0" onmouseenter="this.focus()" onwheel="this.focus()">
+        <select id="fmonth" onchange="autoRender()">
           <option value="1">Январь</option><option value="2">Февраль</option>
           <option value="3">Март</option><option value="4">Апрель</option>
           <option value="5">Май</option><option value="6">Июнь</option>
@@ -1365,7 +1377,7 @@ function showDayDetail(day, month, year, p, bdate) {
   const personName = getActivePersonName();
   document.getElementById('modalTitle').innerHTML = 
     `${day} ${monthNames[month-1]} ${year}` +
-    (personName ? `<span class="person-badge"> ${personName}</span>` : '');
+    (personName ? `<span class="person-badge">👤 ${personName}</span>` : '');
   document.getElementById('bigPyramid').innerHTML = renderBigPyramid(p);
   
   document.getElementById('arcanaSection').innerHTML = renderArcana(p);
@@ -1424,7 +1436,7 @@ initDateSelectors();
     }
   } catch (err) {
     console.error('Ошибка инициализации БД:', err);
-    document.getElementById('calendar').innerHTML = '<div class="empty-state">️ Ошибка инициализации хранилища. Попробуйте другой браузер.</div>';
+    document.getElementById('calendar').innerHTML = '<div class="empty-state">⚠️ Ошибка инициализации хранилища. Попробуйте другой браузер.</div>';
   }
 })();
 </script>
