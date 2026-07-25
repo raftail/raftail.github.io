@@ -152,6 +152,12 @@
     border: 1px dashed rgba(114, 47, 55, 0.3);
     border-radius: 8px;
   }
+  .add-block select {
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+    font-size: 14px;
+  }
   .add-block input[type="text"] {
     width: 130px;
     padding: 8px;
@@ -674,17 +680,9 @@
   <div class="control-group">
     <label>Добавить дату:</label>
     <div class="add-block">
-      <div style="display: flex; gap: 5px; flex: 1;">
-        <select id="birthDay" style="flex: 1; min-width: 0;">
-          <option value="">День</option>
-        </select>
-        <select id="birthMonth" style="flex: 1; min-width: 0;">
-          <option value="">Месяц</option>
-        </select>
-        <select id="birthYear" style="flex: 1; min-width: 0;">
-          <option value="">Год</option>
-        </select>
-      </div>
+      <select id="birthDay"></select>
+      <select id="birthMonth"></select>
+      <select id="birthYear"></select>
       <input type="text" id="newName" placeholder="Имя" maxlength="20" title="Имя человека">
       <button class="add small" onclick="addDate()">+</button>
     </div>
@@ -742,11 +740,18 @@
 const monthNames = ["январь","февраль","март","апрель","май","июнь",
                     "июль","август","сентябрь","октябрь","ноябрь","декабрь"];
 
+// Инициализация выпадающих списков дат
 function initDateSelectors() {
   const birthDay = document.getElementById('birthDay');
   const birthMonth = document.getElementById('birthMonth');
   const birthYear = document.getElementById('birthYear');
   
+  // Очищаем списки
+  birthDay.innerHTML = '';
+  birthMonth.innerHTML = '';
+  birthYear.innerHTML = '';
+  
+  // Дни (1-31)
   for (let i = 1; i <= 31; i++) {
     const option = document.createElement('option');
     option.value = i.toString().padStart(2, '0');
@@ -754,6 +759,7 @@ function initDateSelectors() {
     birthDay.appendChild(option);
   }
   
+  // Месяцы
   monthNames.forEach((month, index) => {
     const option = document.createElement('option');
     option.value = (index + 1).toString().padStart(2, '0');
@@ -761,6 +767,7 @@ function initDateSelectors() {
     birthMonth.appendChild(option);
   });
   
+  // Годы (1900-текущий)
   const currentYear = new Date().getFullYear();
   for (let i = 1900; i <= currentYear; i++) {
     const option = document.createElement('option');
@@ -768,6 +775,11 @@ function initDateSelectors() {
     option.textContent = i.toString();
     birthYear.appendChild(option);
   }
+  
+  // Устанавливаем значения по умолчанию
+  birthDay.value = '01';
+  birthMonth.value = '01';
+  birthYear.value = currentYear.toString();
 }
 
 function getBirthDate() {
@@ -783,7 +795,6 @@ const now = new Date();
 document.getElementById('fmonth').value = now.getMonth() + 1;
 document.getElementById('fyear').value = now.getFullYear();
 
-// Автообновление календаря при смене месяца/года
 function autoRender() {
   if (activeDate) {
     renderCalendar();
@@ -1050,4 +1061,358 @@ const majorArcana = {
   21: {
     name: "Мир",
     keywords: "Завершение • Интеграция • Достижение • Целостность",
-    symbolism: "Танцующая фигура в венке из лавра (победа), окружённая четырьмя существами — бык, л
+    symbolism: "Танцующая фигура в венке из лавра (победа), окружённая четырьмя существами — бык, лев, орёл, человек (четыре евангелиста, четыре стихии, четыре фиксированных знака зодиака). В руках — два жезла (равновесие).",
+    description: "Мир — последний аркан путешествия Дурака. Символ завершения цикла, достижения цели, ощущения целостности. Вы стали тем, кем должны были стать. Все стихии интегрированы, все уроки пройдены.",
+    positive: "Завершение важного этапа, признание достижений, чувство гармонии с миром. Хорошее время для подведения итогов, празднования успехов, путешествий, выхода на новый уровень.",
+    warning: "Не застревайте в достигнутом — впереди новый цикл. Избегайте самоуспокоенности. Не думайте, что путь окончен — это лишь завершение одного витка спирали.",
+    advice: "Празднуйте свои достижения и интегрируйте полученный опыт. День для ощущения целостности и благодарности за пройденный путь."
+  },
+  22: {
+    name: "Дурак",
+    keywords: "Новое начало • Спонтанность • Вера • Свобода",
+    symbolism: "Юноша в ярких одеждах стоит на краю обрыва, глядя в небо. У его ног — маленькая белая собачка (инстинкт, предупреждение). За плечами — узелок с вещами (прошлый опыт). В руке — белая роза (чистота намерения). Он не видит пропасти — он доверяется.",
+    description: "Дурак — не глупец, а тот, кто начинает путь с чистым сердцем. Он вне системы — его номер 0. Он ещё не знает, что его ждёт, но доверяется жизни. Это аркан абсолютной свободы и бесконечного потенциала.",
+    positive: "Новое начало, спонтанная радость, свобода от ожиданий. Хорошее время для путешествий без плана, начала нового цикла, смелых шагов в неизвестность, творческих экспериментов.",
+    warning: "Не путайте спонтанность с безответственностью. Избегайте наивности и необдуманных рисков. Остерегайтесь обманщиков, пользующихся доверием.",
+    advice: "Сделайте прыжок веры и доверьтесь жизни. День для невинного восприятия мира и свободы от чужих ожиданий. Будьте как ребёнок — открыты и любопытны."
+  }
+};
+
+function formatDateRu(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  return `${d}.${m}.${y}`;
+}
+
+async function addDate() {
+  const date = getBirthDate();
+  const name = document.getElementById('newName').value.trim();
+  
+  if (!date) { alert('Выберите дату рождения'); return; }
+  if (!name) { alert('Введите имя'); return; }
+  
+  if (savedDates.some(item => item.date === date)) {
+    alert('Эта дата уже добавлена');
+    return;
+  }
+  
+  const newItem = { date, name };
+  await saveDateToDB(newItem);
+  
+  savedDates.push(newItem);
+  savedDates.sort((a, b) => a.date.localeCompare(b.date));
+  activeDate = date;
+  await saveActiveDate(activeDate);
+  
+  renderDateSelect();
+  renderCalendar();
+  
+  document.getElementById('newName').value = '';
+}
+
+async function removeActiveDate() {
+  if (!activeDate) { alert('Нет выбранной даты'); return; }
+  const item = savedDates.find(i => i.date === activeDate);
+  const label = item ? `${item.name} (${formatDateRu(item.date)})` : activeDate;
+  if (!confirm(`Удалить дату "${label}"?`)) return;
+  
+  await deleteDateFromDB(activeDate);
+  savedDates = savedDates.filter(i => i.date !== activeDate);
+  activeDate = savedDates.length > 0 ? savedDates[0].date : null;
+  await saveActiveDate(activeDate);
+  
+  renderDateSelect();
+  renderCalendar();
+}
+
+async function selectDate(date) {
+  activeDate = date || null;
+  await saveActiveDate(activeDate);
+  renderCalendar();
+  updateSelectStyle();
+}
+
+function updateSelectStyle() {
+  const sel = document.getElementById('dateSelect');
+  if (activeDate && savedDates.some(i => i.date === activeDate)) {
+    sel.classList.remove('empty');
+  } else {
+    sel.classList.add('empty');
+  }
+}
+
+function renderDateSelect() {
+  const sel = document.getElementById('dateSelect');
+  if (savedDates.length === 0) {
+    sel.innerHTML = '<option value="">— нет сохранённых дат —</option>';
+    sel.classList.add('empty');
+    return;
+  }
+  
+  sel.innerHTML = savedDates.map(item => {
+    const [y, m, d] = item.date.split('-');
+    return `<option value="${item.date}">${item.name} (${d}.${m}.${y})</option>`;
+  }).join('');
+  
+  if (activeDate && savedDates.some(i => i.date === activeDate)) {
+    sel.value = activeDate;
+    sel.classList.remove('empty');
+  } else if (savedDates.length > 0) {
+    activeDate = savedDates[0].date;
+    sel.value = activeDate;
+    sel.classList.remove('empty');
+    saveActiveDate(activeDate);
+  }
+}
+
+function getActivePersonName() {
+  const item = savedDates.find(i => i.date === activeDate);
+  return item ? item.name : '';
+}
+
+function sumDigits(n) {
+  return String(n).split('').reduce((s, d) => s + parseInt(d), 0);
+}
+
+function reduce22(n) {
+  n = Math.abs(n);
+  if (n === 0) return 22;
+  return ((n - 1) % 22) + 1;
+}
+
+function toRoman(num) {
+  const r = [
+    {v:22,s:'XXII'},{v:21,s:'XXI'},{v:20,s:'XX'},{v:19,s:'XIX'},
+    {v:18,s:'XVIII'},{v:17,s:'XVII'},{v:16,s:'XVI'},{v:15,s:'XV'},
+    {v:14,s:'XIV'},{v:13,s:'XIII'},{v:12,s:'XII'},{v:11,s:'XI'},
+    {v:10,s:'X'},{v:9,s:'IX'},{v:8,s:'VIII'},{v:7,s:'VII'},
+    {v:6,s:'VI'},{v:5,s:'V'},{v:4,s:'IV'},{v:3,s:'III'},
+    {v:2,s:'II'},{v:1,s:'I'}
+  ];
+  for (let i = 0; i < r.length; i++) {
+    if (num === r[i].v) return r[i].s;
+  }
+  return num.toString();
+}
+
+function calcPyramid(day, month, year, bdate) {
+  const [yB, mB, dB] = bdate.split('-').map(Number);
+  const p1 = reduce22(dB + day);
+  const p2 = reduce22(mB + month);
+  const yBSum = reduce22(sumDigits(yB));
+  const ySum = reduce22(sumDigits(year));
+  const p3 = reduce22(yBSum + ySum);
+  const p4 = reduce22(p1 + p2);
+  const p5 = reduce22(p2 + p3);
+  const p6 = reduce22(p4 + p5);
+  return {p1, p2, p3, p4, p5, p6, yBSum, ySum};
+}
+
+function grpClass(pos) {
+  if (pos === 1 || pos === 4 || pos === 6) return 'grp-a';
+  if (pos === 2 || pos === 5) return 'grp-b';
+  if (pos === 3) return 'grp-c';
+  return '';
+}
+
+function renderMiniPyramid(p) {
+  return `
+    <div class="mini-pyramid">
+      <div class="mini-row">
+        <div class="mini-cell ${grpClass(1)}">${toRoman(p.p1)}</div>
+        <div class="mini-cell ${grpClass(2)}">${toRoman(p.p2)}</div>
+        <div class="mini-cell ${grpClass(3)}">${toRoman(p.p3)}</div>
+      </div>
+      <div class="mini-row">
+        <div class="mini-cell ${grpClass(4)}">${toRoman(p.p4)}</div>
+        <div class="mini-cell ${grpClass(5)}">${toRoman(p.p5)}</div>
+      </div>
+      <div class="mini-row">
+        <div class="mini-cell ${grpClass(6)}">${toRoman(p.p6)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBigPyramid(p) {
+  return `
+    <div class="big-pyramid">
+      <div class="big-row">
+        <div class="big-cell ${grpClass(1)}"><span class="pos">1</span>${toRoman(p.p1)}</div>
+        <div class="big-cell ${grpClass(2)}"><span class="pos">2</span>${toRoman(p.p2)}</div>
+        <div class="big-cell ${grpClass(3)}"><span class="pos">3</span>${toRoman(p.p3)}</div>
+      </div>
+      <div class="big-row">
+        <div class="big-cell ${grpClass(4)}"><span class="pos">4</span>${toRoman(p.p4)}</div>
+        <div class="big-cell ${grpClass(5)}"><span class="pos">5</span>${toRoman(p.p5)}</div>
+      </div>
+      <div class="big-row">
+        <div class="big-cell ${grpClass(6)}"><span class="pos">6</span>${toRoman(p.p6)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderArcana(p) {
+  const positions = [
+    {pos: 1, value: p.p1, time: "00:00 - 15:00", label: "Утренняя энергия"},
+    {pos: 4, value: p.p4, time: "15:00 - 20:00", label: "Дневная энергия"},
+    {pos: 6, value: p.p6, time: "20:00 - 00:00", label: "Вечерняя энергия"}
+  ];
+  
+  return positions.map((item, idx) => {
+    const arcana = majorArcana[item.value];
+    return `
+      <div class="arcana-card" id="arcana-${idx}">
+        <div class="arcana-header" onclick="toggleArcana(${idx})">
+          <div class="arcana-number">${toRoman(item.value)}</div>
+          <div style="flex:1;">
+            <div class="arcana-name">${arcana.name}</div>
+            <div class="arcana-keywords">${arcana.keywords}</div>
+          </div>
+          <div class="arcana-position">Поз. ${item.pos} • ${item.time}</div>
+          <div class="arcana-arrow">▶</div>
+        </div>
+        <div class="arcana-body">
+          <div class="arcana-symbolism">${arcana.symbolism}</div>
+          <div class="arcana-description">${arcana.description}</div>
+          <div class="arcana-block positive">
+            <div class="arcana-block-title">✨ Возможности дня:</div>
+            <div>${arcana.positive}</div>
+          </div>
+          <div class="arcana-block warning">
+            <div class="arcana-block-title">⚠️ Тень аркана:</div>
+            <div>${arcana.warning}</div>
+          </div>
+          <div class="arcana-block advice">
+            <div class="arcana-block-title">💡 Совет:</div>
+            <div>${arcana.advice}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleArcana(idx) {
+  const card = document.getElementById(`arcana-${idx}`);
+  card.classList.toggle('expanded');
+}
+
+function renderCalendar() {
+  if (!activeDate) {
+    document.getElementById('calendar').innerHTML = '<div class="empty-state">Добавьте дату рождения для начала работы</div>';
+    document.getElementById('monthTitle').textContent = '';
+    return;
+  }
+  
+  const fmonth = parseInt(document.getElementById('fmonth').value);
+  const fyear = parseInt(document.getElementById('fyear').value);
+  
+  const personName = getActivePersonName();
+  document.getElementById('monthTitle').innerHTML = 
+    `${monthNames[fmonth-1]} ${fyear}` + 
+    (personName ? `<span class="person-badge">👤 ${personName}</span>` : '');
+  
+  const firstDay = new Date(fyear, fmonth - 1, 1);
+  const daysInMonth = new Date(fyear, fmonth, 0).getDate();
+  let startWeekday = firstDay.getDay() - 1;
+  if (startWeekday < 0) startWeekday = 6;
+  
+  const today = new Date();
+  const cal = document.getElementById('calendar');
+  cal.innerHTML = '';
+  
+  for (let i = 0; i < startWeekday; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'day-cell empty';
+    cal.appendChild(empty);
+  }
+  
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell';
+    if (today.getDate() === d && today.getMonth() === fmonth - 1 && today.getFullYear() === fyear) {
+      cell.classList.add('today');
+    }
+    const p = calcPyramid(d, fmonth, fyear, activeDate);
+    cell.innerHTML = `
+      <div class="day-num">${d}</div>
+      <div class="day-month">${monthNames[fmonth-1]}</div>
+      ${renderMiniPyramid(p)}
+    `;
+    cell.onclick = () => showDayDetail(d, fmonth, fyear, p, activeDate);
+    cal.appendChild(cell);
+  }
+}
+
+function showDayDetail(day, month, year, p, bdate) {
+  const personName = getActivePersonName();
+  document.getElementById('modalTitle').innerHTML = 
+    `${day} ${monthNames[month-1]} ${year}` +
+    (personName ? `<span class="person-badge">👤 ${personName}</span>` : '');
+  document.getElementById('bigPyramid').innerHTML = renderBigPyramid(p);
+  
+  document.getElementById('arcanaSection').innerHTML = renderArcana(p);
+  
+  const [yB, mB, dB] = bdate.split('-').map(Number);
+  document.getElementById('calcContent').innerHTML = `
+    <div style="text-align:left;">
+      <span style="color:#722f37;">■</span> Позиция 1: день рождения ${dB} + день ${day} = ${toRoman(p.p1)}<br>
+      <span style="color:#2980b9;">■</span> Позиция 2: месяц рождения ${mB} + месяц ${month} = ${toRoman(p.p2)}<br>
+      <span style="color:#27ae60;">■</span> Позиция 3: (цифры года рождения ${yB}: ${sumDigits(yB)} → ${toRoman(p.yBSum)}) + (цифры года ${year}: ${sumDigits(year)} → ${toRoman(p.ySum)}) = ${toRoman(p.p3)}<br>
+      <span style="color:#722f37;">■</span> Позиция 4 (1+2): ${toRoman(p.p4)}<br>
+      <span style="color:#2980b9;">■</span> Позиция 5 (2+3): ${toRoman(p.p5)}<br>
+      <span style="color:#722f37;">■</span> Позиция 6 — вершина (4+5): ${toRoman(p.p6)}<br><br>
+      Все числа приведены к кратности 22.
+    </div>
+  `;
+  
+  document.getElementById('calcContent').classList.remove('show');
+  document.getElementById('calcArrow').textContent = '▶';
+  
+  document.getElementById('modal').classList.add('active');
+}
+
+function toggleCalc() {
+  const content = document.getElementById('calcContent');
+  const arrow = document.getElementById('calcArrow');
+  content.classList.toggle('show');
+  arrow.textContent = content.classList.contains('show') ? '▼' : '▶';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+document.getElementById('modal').onclick = (e) => {
+  if (e.target.id === 'modal') closeModal();
+};
+
+// Инициализация при загрузке страницы
+initDateSelectors();
+
+(async () => {
+  try {
+    db = await openDB();
+    savedDates = await loadAllDates();
+    activeDate = await loadActiveDate();
+    
+    if (activeDate && !savedDates.some(i => i.date === activeDate)) {
+      activeDate = savedDates.length > 0 ? savedDates[0].date : null;
+    }
+    
+    renderDateSelect();
+    if (activeDate) {
+      renderCalendar();
+    } else {
+      document.getElementById('calendar').innerHTML = '<div class="empty-state">Добавьте дату рождения для начала работы</div>';
+    }
+  } catch (err) {
+    console.error('Ошибка инициализации БД:', err);
+    document.getElementById('calendar').innerHTML = '<div class="empty-state">⚠️ Ошибка инициализации хранилища. Попробуйте другой браузер.</div>';
+  }
+})();
+</script>
+
+</body>
+</html>
