@@ -266,11 +266,12 @@
     position: relative;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
+  /* Голубая подсветка при наведении */
   .day-cell:hover {
-    background: rgba(160, 82, 74, 0.15);
-    border-color: #722f37;
+    background: rgba(93, 173, 226, 0.12);
+    border-color: rgba(93, 173, 226, 0.35);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(114, 47, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(93, 173, 226, 0.2);
   }
   .day-cell.empty { visibility: hidden; }
   .day-cell.today {
@@ -286,7 +287,6 @@
     margin-bottom: 2px;
   }
   
-  /* Название месяца под числом */
   .day-month {
     font-size: 10px;
     color: #5a6c7d;
@@ -1327,7 +1327,6 @@ function renderCalendar() {
       cell.classList.add('today');
     }
     const p = calcPyramid(d, fmonth, fyear, activeDate);
-    // Добавляем название месяца под числом
     cell.innerHTML = `
       <div class="day-num">${d}</div>
       <div class="day-month">${monthNames[fmonth-1]}</div>
